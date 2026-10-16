@@ -1,0 +1,224 @@
+/* ==========================================================================
+   Aditya Ortho — "Our brands" showcase
+   Four equal cards: soft product stage on top, wordmark chip, copy + CTA.
+   ========================================================================== */
+
+.brand-showcase-section {
+  position: relative;
+  padding: 96px 0 88px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f3faf7 100%) !important;
+  overflow: hidden;
+}
+
+.brand-showcase-intro {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .8fr);
+  align-items: end;
+  gap: 48px;
+  margin-bottom: 44px !important;
+}
+.brand-showcase-intro > p {
+  margin: 0;
+  max-width: 460px;
+  justify-self: end;
+  padding-left: 22px;
+  border-left: 3px solid #bfe3d6;
+  color: #4b6058;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.brand-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.brand-showcase-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 440px;
+  height: auto;
+  padding: 262px 26px 26px;
+  border: 1px solid #dbe9e3;
+  border-radius: 28px;
+  background: #fff;
+  color: #0e2620;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 1px 2px rgba(6, 84, 67, .04), 0 10px 30px rgba(6, 84, 67, .06);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.brand-showcase-card:hover {
+  transform: translateY(-5px);
+  border-color: #b9ddd0;
+  box-shadow: 0 2px 4px rgba(6, 84, 67, .05), 0 26px 52px rgba(6, 84, 67, .14);
+}
+
+/* product stage */
+.brand-showcase-card:before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 8px 8px auto 8px;
+  height: 236px;
+  border-radius: 21px;
+  background: radial-gradient(circle at 50% 42%, #ffffff 0 28%, #e9f6f0 72%, #dff1ea 100%);
+}
+.showcase-orb,
+.showcase-platform { display: none !important; }
+
+.showcase-product {
+  position: absolute !important;
+  z-index: -1;
+  top: 8px !important;
+  left: 8px !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: calc(100% - 16px) !important;
+  height: 236px !important;
+  padding: 34px 28px 22px;
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+  background: transparent;
+  font-size: 0; /* hides alt text if a remote image fails to load */
+  filter: none !important;
+  transform: none !important;
+  transition: transform .4s ease;
+}
+.brand-showcase-card:hover .showcase-product { transform: scale(1.05) !important; }
+
+/* wordmark chip */
+.showcase-logo {
+  position: absolute !important;
+  z-index: 2;
+  top: 20px !important;
+  left: 20px !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0;
+  padding: 8px 13px !important;
+  border: 1px solid #e3efe9;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 14px rgba(6, 84, 67, .09) !important;
+  line-height: 1;
+}
+.showcase-logo strong {
+  font: 800 15px/1 Manrope, sans-serif !important;
+  letter-spacing: .02em !important;
+}
+.showcase-logo small {
+  margin-top: 4px;
+  font: 700 7.5px/1 "DM Sans", sans-serif !important;
+  letter-spacing: .16em !important;
+}
+.showcase-logo:before { display: none !important; }
+.showcase-logo-samson strong, .showcase-logo-samson small { color: #d6342b; }
+.showcase-logo-tynor strong { color: #171717; font-size: 18px !important; letter-spacing: -.04em !important; }
+.showcase-logo-dynamic strong, .showcase-logo-dynamic small { color: #1f6fd0; }
+.showcase-logo-um strong, .showcase-logo-um small { color: #e8590c; }
+.showcase-logo-um strong { font-size: 18px !important; }
+
+/* index chip */
+.showcase-index {
+  position: absolute !important;
+  z-index: 2;
+  top: 24px !important;
+  right: 22px !important;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .85);
+  color: #4b6058;
+  font: 700 11px/1 "DM Sans", sans-serif;
+  letter-spacing: .06em;
+}
+
+/* copy */
+.showcase-copy {
+  position: static !important;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  max-width: none !important;
+}
+.showcase-copy h3 {
+  margin: 0 0 8px;
+  font: 800 22px/1.2 Manrope, sans-serif;
+  letter-spacing: -.02em;
+  color: #0e2620;
+}
+.showcase-copy p {
+  margin: 0 0 22px;
+  color: #5a6e66;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.showcase-cta {
+  display: inline-flex !important;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  margin-top: auto;
+  padding: 11px 16px 11px 18px;
+  border-radius: 999px;
+  background: #e2f3ed !important;
+  color: #065443 !important;
+  font: 700 13.5px/1 "DM Sans", sans-serif;
+  box-shadow: none !important;
+  transition: background .2s ease, color .2s ease;
+}
+.showcase-cta i {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  background: none !important;
+  color: inherit;
+  font-style: normal;
+}
+.showcase-cta .i-arr { width: 16px; height: 16px; }
+.brand-showcase-card:hover .showcase-cta { background: #08745f !important; color: #fff !important; }
+
+/* footer strip */
+.brand-showcase-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 36px;
+  padding: 18px 24px;
+  border: 1px solid #dbe9e3;
+  border-radius: 20px;
+  background: #fff;
+}
+.brand-showcase-foot > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #3d524b;
+  font-size: 14px;
+  font-weight: 600;
+}
+.brand-showcase-foot > span i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #14a083;
+  box-shadow: 0 0 0 5px #e2f3ed;
+}
+.brand-showcase-foot > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #08745f;
+  font-weight: 700;
+  font-size: 14px;
+}
+.brand-showcase-foot > a b { display: inline-flex; }
+.brand-showcase-foot > a:hover { color: #065443; }

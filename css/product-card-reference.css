@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Aditya Ortho — product grid layout + "Enquire on WhatsApp" button
+   ========================================================================== */
+
+.home-product-grid,
+.product-grid,
+.loading-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px !important;
+  align-items: stretch;
+}
+
+/* CTA — full-width green button with a WhatsApp glyph (pure CSS, no markup change) */
+.product-grid .product-card .product-cta,
+.product-grid .product-card .product-body .btn,
+.home-product-grid .home-product-card .product-cta,
+.home-product-grid .home-product-card .product-body .btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100% !important;
+  min-height: 46px !important;
+  margin: auto 0 0 !important;
+  padding: 0 18px !important;
+  border: 1px solid #08745f !important;
+  border-radius: 14px !important;
+  background: #08745f !important;
+  color: #fff !important;
+  font: 700 13.5px/1 "DM Sans", Arial, sans-serif !important;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  box-shadow: none !important;
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease !important;
+}
+.product-grid .product-card .product-cta:before,
+.product-grid .product-card .product-body .btn:before,
+.home-product-grid .home-product-card .product-cta:before,
+.home-product-grid .home-product-card .product-body .btn:before {
+  content: "";
+  flex: none;
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 3.5A11.8 11.8 0 0 0 12.08 0C5.56 0 .25 5.3.25 11.82c0 2.08.54 4.1 1.56 5.89L.17 24l6.44-1.69a11.8 11.8 0 0 0 5.47 1.35h.01c6.52 0 11.83-5.31 11.83-11.83 0-3.16-1.23-6.13-3.42-8.33Zm-8.42 18.1h-.01a9.78 9.78 0 0 1-4.98-1.36l-.36-.21-3.82 1 1.02-3.72-.23-.38a9.78 9.78 0 1 1 8.38 4.67Zm5.36-7.34c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.2-.33.22-.62.07-.29-.15-1.21-.45-2.3-1.43-.85-.76-1.43-1.7-1.6-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.33.43-.49.15-.17.2-.29.3-.48.1-.2.05-.37-.02-.52-.07-.15-.64-1.55-.88-2.12-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.37-.26.29-.98.96-.98 2.35s1 2.72 1.14 2.91c.14.2 1.97 3.01 4.77 4.22.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34Z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 3.5A11.8 11.8 0 0 0 12.08 0C5.56 0 .25 5.3.25 11.82c0 2.08.54 4.1 1.56 5.89L.17 24l6.44-1.69a11.8 11.8 0 0 0 5.47 1.35h.01c6.52 0 11.83-5.31 11.83-11.83 0-3.16-1.23-6.13-3.42-8.33Zm-8.42 18.1h-.01a9.78 9.78 0 0 1-4.98-1.36l-.36-.21-3.82 1 1.02-3.72-.23-.38a9.78 9.78 0 1 1 8.38 4.67Zm5.36-7.34c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.73.93-.9 1.12-.17.2-.33.22-.62.07-.29-.15-1.21-.45-2.3-1.43-.85-.76-1.43-1.7-1.6-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.33.43-.49.15-.17.2-.29.3-.48.1-.2.05-.37-.02-.52-.07-.15-.64-1.55-.88-2.12-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.37-.26.29-.98.96-.98 2.35s1 2.72 1.14 2.91c.14.2 1.97 3.01 4.77 4.22.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.product-grid .product-card .product-cta:hover,
+.product-grid .product-card .product-body .btn:hover,
+.home-product-grid .home-product-card .product-cta:hover,
+.home-product-grid .home-product-card .product-body .btn:hover {
+  background: #065443 !important;
+  border-color: #065443 !important;
+  transform: none !important;
+}
+
+/* loading skeleton */
+.loading-grid span {
+  display: block;
+  height: 380px;
+  border-radius: 24px;
+  background: linear-gradient(110deg, #eef7f3 30%, #f8fcfa 50%, #eef7f3 70%);
+  border: 1px solid #dbe9e3;
+}
+
+/* empty state */
+.catalogue-empty,
+.home-product-grid .empty {
+  grid-column: 1 / -1;
+  padding: 56px 24px;
+  border: 1px dashed #b9ddd0;
+  border-radius: 24px;
+  background: #f3faf7;
+  color: #3d524b;
+  text-align: center;
+}

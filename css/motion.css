@@ -1,0 +1,177 @@
+/* ==========================================================================
+   Aditya Ortho — motion layer (loaded LAST on every page)
+   Rules of this file:
+   · Movement is opt-in via (prefers-reduced-motion: no-preference); people who
+     ask for less motion still get short opacity/colour transitions only.
+   · Only transform / opacity are animated (GPU friendly, no layout thrash).
+   · Nothing here can leave content hidden: entrance animations use
+     animation-fill-mode:both on elements that are visible without them.
+   ========================================================================== */
+:root{
+  --m-ease: cubic-bezier(.22,.8,.24,1);
+  --m-ease-out: cubic-bezier(.16,1,.3,1);
+  --m-green: #0a8f6f;
+}
+
+/* No-JS safety net: never leave scroll-reveal content invisible */
+.no-js .reveal,.no-js .motion-ready,.no-js .motion-child{opacity:1!important;transform:none!important;filter:none!important}
+
+/* Scroll progress bar (element is injected by motion.js) */
+.scroll-progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:3000;pointer-events:none;background:transparent}
+.scroll-progress i{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#0a8f6f,#7de8c6);border-radius:0 3px 3px 0;transition:transform .12s linear}
+
+/* Colour / focus transitions are safe for everyone (Tier 3) */
+a,button,summary{transition-property:color,background-color,border-color,box-shadow,opacity,transform;transition-duration:.2s;transition-timing-function:ease}
+:focus-visible{outline:3px solid #7de8c6;outline-offset:3px;border-radius:6px}
+
+@media (prefers-reduced-motion: no-preference){
+
+  /* ---- Page enter + cross-page transition ------------------------------ */
+  @view-transition{navigation:auto}
+  ::view-transition-old(root){animation:.25s ease both vtOut}
+  ::view-transition-new(root){animation:.35s var(--m-ease-out) both vtIn}
+  @keyframes vtOut{to{opacity:0}}
+  @keyframes vtIn{from{opacity:0;transform:translateY(8px)}}
+
+  /* ---- Hero entrance (staggered) -------------------------------------- */
+  .hero-single-content>*{animation:heroUp .9s var(--m-ease-out) both}
+  .hero-single-kicker{animation-delay:.05s!important}
+  .hero-single-content h1{animation-delay:.18s!important}
+  .hero-single-content>p{animation-delay:.34s!important}
+  .hero-single-actions{animation-delay:.48s!important}
+  .hero-single-proof{animation-delay:.62s!important}
+  @keyframes heroUp{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+
+  /* hero background drifts very slowly (scale only, compositor-friendly) */
+  .hero-single{isolation:isolate}
+  .hero-single-overlay{animation:heroOverlay 14s ease-in-out infinite alternate}
+  @keyframes heroOverlay{from{opacity:1}to{opacity:.88}}
+  .hero-single-scroll b{animation:cueBounce 1.8s ease-in-out infinite}
+  @keyframes cueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  /* gradient emphasis words shimmer once when their section reveals */
+  .hero-single h1 em{background:linear-gradient(100deg,#7de8c6 20%,#d9fff0 45%,#7de8c6 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:emShine 3.6s ease-in-out 1.1s 1 both}
+  @keyframes emShine{from{background-position:120% 0}to{background-position:-20% 0}}
+
+  /* ---- Eyebrows: pulsing dot ------------------------------------------ */
+  .eyebrow::before{animation:dotPulse 2.4s ease-in-out infinite}
+  @keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.55}}
+
+  /* ---- Buttons: shine sweep + arrow nudge ----------------------------- */
+  .btn,.hero-single-primary,.header-cta,.category-view-all{position:relative;overflow:hidden;isolation:isolate}
+  .btn::after,.hero-single-primary::after,.header-cta::after{content:"";position:absolute;inset:0 auto 0 -60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);transition:transform .7s var(--m-ease);pointer-events:none;z-index:-1}
+  .btn:active,.hero-single-primary:active{transform:scale(.97)}
+  svg.i-arr{transition:transform .25s var(--m-ease)}
+
+  /* ---- WhatsApp button: attention ring -------------------------------- */
+  .floating-whatsapp{animation:waIn .7s var(--m-ease-out) 1.4s both}
+  .floating-wa-icon{position:relative}
+  .floating-wa-icon::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25d366;animation:waRing 2.6s ease-out infinite;pointer-events:none}
+  @keyframes waIn{from{opacity:0;transform:translateY(20px) scale(.9)}to{opacity:1;transform:none}}
+  @keyframes waRing{0%{transform:scale(1);opacity:.7}70%,100%{transform:scale(1.7);opacity:0}}
+
+  /* ---- Offer banner slide-down ---------------------------------------- */
+  .offer-banner{animation:bannerIn .6s var(--m-ease-out) both}
+  @keyframes bannerIn{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+
+  /* ---- Mega menu: items cascade in ------------------------------------ */
+  .nav-dropdown.is-open .mega-menu a{animation:megaItem .45s var(--m-ease-out) both}
+  .nav-dropdown.is-open .mega-menu a:nth-child(2){animation-delay:.04s}
+  .nav-dropdown.is-open .mega-menu a:nth-child(3){animation-delay:.08s}
+  .nav-dropdown.is-open .mega-menu a:nth-child(4){animation-delay:.12s}
+  .nav-dropdown.is-open .mega-menu a:nth-child(5){animation-delay:.16s}
+  @keyframes megaItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---- Mobile drawer links cascade ------------------------------------ */
+  .mobile-drawer.is-open .mobile-nav>*{animation:megaItem .5s var(--m-ease-out) both}
+  .mobile-drawer.is-open .mobile-nav>*:nth-child(2){animation-delay:.05s}
+  .mobile-drawer.is-open .mobile-nav>*:nth-child(3){animation-delay:.10s}
+  .mobile-drawer.is-open .mobile-nav>*:nth-child(4){animation-delay:.15s}
+  .mobile-drawer.is-open .mobile-nav>*:nth-child(5){animation-delay:.20s}
+  .mobile-drawer.is-open .mobile-nav>*:nth-child(6){animation-delay:.25s}
+
+  /* ---- Product images fade/scale in as they arrive -------------------- */
+  .product-image img,.category-round-image img{animation:imgIn .6s var(--m-ease-out) both}
+  @keyframes imgIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+  .product-image{position:relative}
+  .product-image::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(10,143,111,.08) 50%,transparent 70%);background-size:220% 100%;animation:skeleton 1.6s linear infinite;pointer-events:none;border-radius:inherit}
+  @keyframes skeleton{from{background-position:120% 0}to{background-position:-120% 0}}
+  .loading-grid span{animation:skeletonPulse 1.4s ease-in-out infinite}
+  @keyframes skeletonPulse{0%,100%{opacity:.55}50%{opacity:1}}
+
+  /* ---- Decorative orbs float ------------------------------------------ */
+  .showcase-orb{animation:orbFloat 9s ease-in-out infinite}
+  .catalogue-orbit.orbit-a{animation:orbitSpin 40s linear infinite}
+  .catalogue-orbit.orbit-b{animation:orbitSpin 55s linear infinite reverse}
+  .catalogue-float{animation:orbFloat 6s ease-in-out infinite}
+  @keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes orbitSpin{to{transform:rotate(360deg)}}
+
+  /* ---- Map pin bounce -------------------------------------------------- */
+  .map-pin{animation:pinFloat 3s ease-in-out infinite}
+  @keyframes pinFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  /* ---- FAQ: smooth open/close (progressive enhancement, Chromium 131+) - */
+  @supports (interpolate-size: allow-keywords){
+    :root{interpolate-size:allow-keywords}
+    .faq-list details::details-content{block-size:0;overflow:clip;opacity:0;transition:block-size .4s var(--m-ease),opacity .3s ease,content-visibility .4s allow-discrete}
+    .faq-list details[open]::details-content{block-size:auto;opacity:1}
+  }
+  .faq-list summary::after,.mobile-nav summary span{transition:transform .3s var(--m-ease)}
+  .faq-list details[open] summary::after,.mobile-nav details[open] summary span{transform:rotate(45deg)}
+
+  /* ---- Tilt cards (brand showcase) — vars set by motion.js ------------ */
+  .brand-showcase-card.is-visible{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .5s var(--m-ease),box-shadow .4s ease;will-change:transform}
+  .brand-showcase-card.is-tilting{transition:transform .08s linear,box-shadow .4s ease}
+  .brand-showcase-card .showcase-product{transition:transform .6s var(--m-ease)}
+  .brand-showcase-card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.55),transparent 55%);opacity:0;transition:opacity .35s ease;pointer-events:none;z-index:1}
+
+  /* ---- Staggered children of reveal groups ---------------------------- */
+  .reveal-group>.reveal:nth-child(2){transition-delay:.08s}
+  .reveal-group>.reveal:nth-child(3){transition-delay:.16s}
+  .reveal-group>.reveal:nth-child(4){transition-delay:.24s}
+
+  /* Number "pop" when count-up finishes */
+  .count-done{animation:countPop .5s var(--m-ease) both}
+  @keyframes countPop{50%{transform:scale(1.08)}}
+}
+
+/* ---- Hover effects: only on devices that really hover ------------------ */
+@media (prefers-reduced-motion: no-preference) and (hover:hover) and (pointer:fine){
+  .btn:hover::after,.hero-single-primary:hover::after,.header-cta:hover::after{transform:translateX(420%) skewX(-20deg)}
+  a:hover>svg.i-arr,button:hover>svg.i-arr,.btn:hover svg.i-arr,.header-cta:hover svg.i-arr{transform:translateX(4px)}
+  .hero-single-primary:hover b svg{transform:translate(2px,-2px)}
+  .brand-showcase-card:hover::before{opacity:1}
+  .brand-showcase-card:hover .showcase-product{transform:translateY(-8px) scale(1.06) rotate(-2deg)}
+  .product-card:hover .product-image img,.home-product-card:hover .product-image img{transform:scale(1.07)}
+  .product-image img{transition:transform .5s var(--m-ease)}
+  .category-round-item:hover .category-round-image{transform:translateY(-6px) scale(1.04)}
+  .category-round-image{transition:transform .45s var(--m-ease),box-shadow .35s ease}
+  .support-v2-card:hover b,.discovery-v2-card:hover b{transform:translate(3px,-3px)}
+  .support-v2-card b,.discovery-v2-card b{transition:transform .3s var(--m-ease)}
+  .support-v2-card:hover .ico-tile,.discovery-v2-card:hover .ico-tile{transform:rotate(-8deg) scale(1.1)}
+  .ico-tile{transition:transform .4s var(--m-ease)}
+  .floating-whatsapp:hover{transform:translateY(-3px)}
+}
+
+/* ---- Reduced motion: keep orientation, drop movement (tiered) ---------- */
+@media (prefers-reduced-motion: reduce){
+  .scroll-progress i{transition:none}
+  .hero-single-content>*,.offer-banner{animation:fadeOnly .2s ease both}
+  @keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+  .floating-wa-icon::after{display:none}
+}
+
+/* ==========================================================================
+   Utility & structural additions (audit fixes)
+   ========================================================================== */
+/* Visually hidden, still read by screen readers / crawlers */
+.sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* mega menu titles were <h2>/<h3> inside the nav — now <p>, keep display:block */
+.mega-title,.mega-col-title{display:block}
+.mega-col-title{margin:2px 0 11px}
+/* "Show more products" paging on the catalogue */
+.load-more-wrap{display:flex;justify-content:center;margin:34px 0 8px}
+.load-more-wrap .btn[hidden]{display:none}
+/* images that fell back to the logo shouldn't be stretched */
+img.img-fallback{object-fit:contain;padding:18%;opacity:.55}
